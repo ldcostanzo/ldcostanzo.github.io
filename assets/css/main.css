@@ -3423,6 +3423,7 @@ input, select, textarea {
 							height: 2em;
 							line-height: 2em;
 							padding: 0 1.25em;
+							
 						}
 
 						#header nav ul li a:not(.button):before, #header nav ul li span:not(.button):before {
@@ -3430,7 +3431,7 @@ input, select, textarea {
 						}
 
 					#header nav ul li.active > a, #header nav ul li.active > span {
-						color: #e44c65;
+						color: #ce8fcc;
 					}
 
 					#header nav ul li > ul {
