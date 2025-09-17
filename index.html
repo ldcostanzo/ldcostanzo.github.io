@@ -1,149 +1,479 @@
-<!DOCTYPE HTML>
-<!--
-	Landed by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>HTML5 UP</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-	</head>
-	<body class="is-preload landing">
-		<div id="page-wrapper">
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laura Di Costanzo - Cyber Security Student</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-			<!-- Header -->
-				<header id="header">
-					
-					<nav id="nav">
-						<ul>
-							<li><a href="index.html">Home</a></li>
-							</li>
-						</ul>
-					</nav>
-				</header>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
 
-			<!-- Banner -->
-				<section id="banner">
-					<div class="content">
-						<header>
-							<h2>Welcome World</h2>
-							<p>I'm Laura Di Costanzo</p>
-						</header>
-						<span class="image"><img src="images/imgio.jpg" alt="" /></span>
-					</div>
-					<a href="#one" class="goto-next scrolly">Next</a>
-				</section>
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
 
-			<!-- One -->
-				<section id="one" class="spotlight style1 bottom">
-					<span class="image fit main"><img src="images/ok.jpg" alt="prova" /></span>
-					<div class="content">
-						<div class="container">
-							<div class="row">
-								<div class="col-4 col-12-medium">
-									<header>
-										<h2>I'm an Ethical Hacker</h2>
-										<p>I am currently a student at the Cyber Hackademy of the University Federico II</p>
-									</header>
-								</div>
-								<div class="col-4 col-12-medium">
-									<p></p>
-								</div>
-								<div class="col-4 col-12-medium">
-									<p>.</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<a href="#two" class="goto-next scrolly">Next</a>
-				</section>
+        header {
+            padding: 3rem 0;
+            text-align: center;
+        }
 
-			<!-- Two -->
-				<section id="two" class="spotlight style2 right">
-					<span class="image fit main"><img src="images/ok.jpg" alt="" /></span>
-					<div class="content">
-						<header>
-							<h2></h2>
-							<p></p>
-						</header>
-						<p></p>
-						<ul class="actions">
-							<li><a href="#" class="button">Learn More</a></li>
-						</ul>
-					</div>
-					<a href="#three" class="goto-next scrolly">Next</a>
-				</section>
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
 
-		
+        .profile-image {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #00ff9f, #00b4d8);
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 3s infinite;
+        }
 
-			<!-- Four -->
-				<section id="four" class="wrapper style1 special fade-up">
-					<div class="container">
-						<header class="major">
-							<h2>Contact Me</h2>
-							<p></p>
-						</header>
-						  <footer id="footer">
-							<ul class="icons">
-							
-								<li><a href="https://www.linkedin.com/in/laura-di-costanzo-955a5022b/" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
-								<li><a href="https://www.instagram.com/lauradicostanzo__?igsh=b3VqY2Rocnh5OHc2" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
-								<li><a href="https://github.com/ldcostanzo" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
-								
-							</ul>
-						<!-- <div class="box alt">
-							<div class="row gtr-uniform">
-								<section class="col-4 col-6-medium col-12-xsmall">
-									<li><a href="https://www.linkedin.com/in/laura-di-costanzo-955a5022b/" class="button">Linkedin</a></li>
-									<div class="content">
-								</section>
-								<section class="col-4 col-6-medium col-12-xsmall">
-									<li><a href="https://github.com/ldcostanzo" class="button">GitHub</a></li>
-									<div class="content">
-								</section>
-								<section class="col-4 col-6-medium col-12-xsmall">
-									<li><a href="https://www.instagram.com/lauradicostanzo__?igsh=b3VqY2Rocnh5OHc2" class="button">Instagram</a></li>
-									<div class="content">
-								</section>
-							</div>
-						</div> -->
-						<footer class="major">
-							<ul class="actions special">
-								<li><a href="#" class="button">Go up</a></li>
-							</ul>
-						</footer>
-					</div>
-				</section>
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
 
-			<!-- Footer -->
-				
-					<ul class="copyright">
-						<li>Design: Laura</li>
-					</ul>
-				</footer>
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
 
-		</div>
+        .profile-info h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, #00ff9f, #00b4d8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/jquery.dropotron.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
-			<div id="titleBar">
-				<a href="#navPanel" class="toggle"></a>
-				<span class="title">Home</span>
-			</div>
-		<div id="navPanel">
-			
-		</div>
+        .profile-info p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
 
-	</body>
+        .section {
+            margin: 3rem 0;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 159, 0.2);
+            position: relative;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #00ff9f;
+            border-bottom: 2px solid #00b4d8;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .skill-card {
+            background: rgba(0, 180, 216, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 159, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .skill-card:hover {
+            background: rgba(0, 255, 159, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .skill-card h3 {
+            color: #00b4d8;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .skill-card p {
+            line-height: 1.5;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #00ff9f, #00b4d8);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-left: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 0.5rem;
+            width: 10px;
+            height: 10px;
+            background: #00ff9f;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00ff9f;
+        }
+
+        .timeline-item h3 {
+            color: #00b4d8;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .timeline-item .date {
+            color: #00ff9f;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .contact-card {
+            background: rgba(0, 180, 216, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(0, 255, 159, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            background: rgba(0, 255, 159, 0.15);
+            transform: scale(1.02);
+        }
+
+        .contact-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #00ff9f;
+        }
+
+        .terminal {
+            background: #000;
+            border-radius: 10px;
+            padding: 1.5rem;
+            font-family: 'Courier New', monospace;
+            border: 1px solid #00ff9f;
+            margin: 2rem 0;
+        }
+
+        .terminal-header {
+            color: #00ff9f;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .terminal-line {
+            margin: 0.5rem 0;
+            color: #ffffff;
+        }
+
+        .cyber-button {
+            background: linear-gradient(45deg, #00ff9f, #00b4d8);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cyber-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 159, 0.4);
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(0, 255, 159, 0.2);
+            color: #00ff9f;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin: 0.3rem;
+            border: 1px solid rgba(0, 255, 159, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .profile-section {
+                flex-direction: column;
+            }
+
+            .profile-info h1 {
+                font-size: 2rem;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Subtle animations */
+        .section {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .floating-code {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.03;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #00ff9f;
+            overflow: hidden;
+        }
+
+        .code-line {
+            position: absolute;
+            white-space: nowrap;
+            animation: float 15s linear infinite;
+        }
+
+        @keyframes float {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(100vw); }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-code">
+        <div class="code-line" style="top: 10%; animation-delay: 0s;">if (security == true) { protect(); }</div>
+        <div class="code-line" style="top: 25%; animation-delay: 3s;">while (learning) { improve_skills(); }</div>
+        <div class="code-line" style="top: 40%; animation-delay: 6s;">function secure() { return future; }</div>
+        <div class="code-line" style="top: 55%; animation-delay: 9s;">const passion = 'cybersecurity';</div>
+        <div class="code-line" style="top: 70%; animation-delay: 12s;">hackademy.student.ready = true;</div>
+        <div class="code-line" style="top: 85%; animation-delay: 15s;">console.log('Ready to protect!');</div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="profile-section">
+                <div class="profile-image">
+                    <img src="image.jpeg" alt="Laura Di Costanzo" />
+                </div>
+                <div class="profile-info">
+                    <h1>Laura Di Costanzo</h1>
+                    <p>Studentessa Cyber Security - Università Federico II Napoli</p>
+                </div>
+            </div>
+
+        </header>
+            </div>
+
+    <div class="terminal">
+        <div class="terminal-header">$ cd /cyber-hackademy</div>
+        <div class="terminal-line">laura@cyber-hackademy:~$ Cyber Security Student</div>
+                <div class="terminal-line">laura@cyber-hackademy:~$ Always learning, always securing</div>
+                <div class="terminal-line">laura@cyber-hackademy:~$ Ready for new challenges</div>
+            </div>
+        </header>
+
+        <section class="section">
+            <h2>🎯 Chi Sono</h2>
+            <p>Sono una studentessa della Cyber Hackademy presso l'Università Federico II di Napoli. Durante questo percorso formativo ho avuto modo di approfondire le principali tematiche della cybersecurity, dalle basi teoriche alle applicazioni pratiche.</p>
+            <p style="margin-top: 1rem;">La mia passione per la sicurezza informatica mi spinge a continuare ad apprendere e ad applicare le conoscenze acquisite per contribuire alla protezione del mondo digitale.</p>
+            
+            <div style="margin-top: 1.5rem;">
+                <span class="badge">Curiosa</span>
+                <span class="badge">Motivata</span>
+                <span class="badge">Problem Solver</span>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>📚 Competenze Acquisite</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <h3>Fondamenti di Cybersecurity</h3>
+                    <p>Principi base della sicurezza informatica, minacce e vulnerabilità, modelli di sicurezza</p>
+                </div>
+                <div class="skill-card">
+                    <h3>Sicurezza delle Reti</h3>
+                    <p>Protocolli di rete, firewall, sistemi di rilevamento intrusioni, sicurezza wireless</p>
+                </div>
+                <div class="skill-card">
+                    <h3>Crittografia</h3>
+                    <p>Algoritmi di crittografia simmetrica e asimmetrica, hash, firme digitali, PKI</p>
+                </div>
+                <div class="skill-card">
+                    <h3>Ethical Hacking</h3>
+                    <p>Metodologie di penetration testing, vulnerability assessment, tool di security testing</p>
+                </div>
+                <div class="skill-card">
+                    <h3>Sicurezza Web</h3>
+                    <p>OWASP Top 10, vulnerabilità web comuni, tecniche di protezione applicazioni web</p>
+                </div>
+                <div class="skill-card">
+                    <h3>Digital Forensics</h3>
+                    <p>Analisi forense digitale, acquisizione e analisi di evidenze digitali</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🎓 Percorso Formativo</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="date">2025 - Completato</div>
+                    <h3>Cyber Hackademy - Università Federico II di Napoli</h3>
+                    <p>Programma specialistico in Cybersecurity che copre tutti gli aspetti della sicurezza informatica, dalla teoria alla pratica. Approfondimento di tematiche come ethical hacking, digital forensics, crittografia e sicurezza delle reti.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="date">2016</div>
+                    <h3>Diploma di Maturità</h3>
+                    <p>Esperta in Logistica - Istituto Tecnico Trasporti e Logistica</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🚀 Obiettivi</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <h3>Specializzazione</h3>
+                    <p>Continuare ad approfondire le competenze in cybersecurity attraverso corsi avanzati e certificazioni</p>
+                </div>
+                <div class="skill-card">
+                    <h3>Esperienza Pratica</h3>
+                    <p>Acquisire esperienza sul campo attraverso stage e progetti pratici nel settore della sicurezza</p>
+                </div>
+                <div class="skill-card">
+                    <h3>Crescita Professionale</h3>
+                    <p>Diventare una professionista qualificata nel campo della cybersecurity</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>📞 Contatti</h2>
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <div class="contact-icon">📧</div>
+                    <h3>Email</h3>
+                    <p>lauradicostanzo98@gmail.com</p>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">💼</div>
+                    <h3>LinkedIn</h3>
+                    <p><a href="https://www.linkedin.com/in/laura-di-costanzo-cyber">Laura Di Costanzo</a></p>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">🐙</div>
+                    <h3>GitHub</h3>
+                    <p><a href="https://github.com/ldcostanzo">ldcostanzo</a></p>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">🎓</div>
+                    <h3>Università</h3>
+                    <p>Federico II - Napoli</p>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="cyber-button" onclick="showContact()">Contattami</button>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function showContact() {
+            alert('📩 Grazie per l\'interesse! Non esitare a contattarmi per opportunità o collaborazioni nel campo della cybersecurity.');
+        }
+
+        // Simple animation on scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.8) {
+                    section.style.opacity = '1';
+                    section.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.style.opacity = '0.7';
+                section.style.transform = 'translateY(20px)';
+                section.style.transition = 'all 0.6s ease';
+            });
+        });
+    </script>
+</body>
 </html>
