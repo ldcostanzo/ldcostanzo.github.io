@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[LAURA DI COSTANZO] — Cybersecurity Blog</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&family=VT323:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --yellow: #FFD700;
+    --cyan: #00FFFF;
+    --magenta: #FF00FF;
+    --green: #39FF14;
+    --dark: #0a0a0f;
+    --dark2: #12121a;
+    --dark3: #1a1a28;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--dark);
+    color: #e0e0e0;
+    font-family: 'Share Tech Mono', monospace;
+    cursor: none;
+    overflow-x: hidden;
+  }
+  #pacman-cursor {
+    position: fixed; width: 36px; height: 36px;
+    pointer-events: none; z-index: 9999;
+  }
+  .dot-trail {
+    position: fixed; width: 8px; height: 8px;
+    background: var(--yellow); border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    animation: dotFade 0.7s ease-out forwards;
+  }
+  @keyframes dotFade { 0%{opacity:1;transform:scale(1)} 100%{opacity:0;transform:scale(0)} }
+  body::after {
+    content:''; position:fixed; top:0;left:0;width:100%;height:100%;
+    background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.12) 2px,rgba(0,0,0,0.12) 4px);
+    pointer-events:none; z-index:9990;
+  }
+  body::before {
+    content:''; position:fixed; top:0;left:0;width:100%;height:100%;
+    background-image:linear-gradient(rgba(0,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,255,0.025) 1px,transparent 1px);
+    background-size:32px 32px; pointer-events:none; z-index:0;
+  }
+  nav {
+    position:fixed; top:0;left:0;right:0; z-index:1000;
+    background:rgba(10,10,15,0.96); border-bottom:2px solid var(--cyan);
+    padding:0.8rem 2rem; display:flex; justify-content:space-between; align-items:center;
+    box-shadow:0 0 20px rgba(0,255,255,0.25);
+  }
+  .nav-logo { font-family:'Press Start 2P',monospace; font-size:0.7rem; color:var(--yellow); text-shadow:2px 2px 0 #8B6914; }
+  .nav-links { display:flex; gap:2rem; list-style:none; }
+  .nav-links a { font-family:'Press Start 2P',monospace; font-size:0.48rem; color:var(--cyan); text-decoration:none; letter-spacing:1px; transition:color 0.2s; }
+  .nav-links a:hover { color:var(--yellow); text-shadow:0 0 10px var(--yellow); }
+  .score-display {
+    position:fixed; top:4.5rem; right:1.5rem; z-index:100;
+    font-family:'Press Start 2P',monospace; font-size:0.45rem; color:var(--yellow);
+    background:rgba(10,10,15,0.85); padding:0.4rem 0.8rem; border:1px solid #222;
+    pointer-events:none; letter-spacing:2px;
+  }
+  section { position:relative; z-index:1; min-height:100vh; padding:5rem 2rem 3rem; max-width:960px; margin:0 auto; }
+  #hero { display:flex; align-items:center; justify-content:center; min-height:100vh; max-width:100%; padding:4rem 5vw; }
+  .hero-layout { display:flex; justify-content:space-between; align-items:center; width:100%; max-width:1100px; gap:3rem; flex-wrap:wrap; }
+  .hero-text { flex:1; min-width:280px; }
+  .hero-tag { font-family:'Press Start 2P',monospace; font-size:0.55rem; color:var(--green); letter-spacing:3px; margin-bottom:1.5rem; text-shadow:0 0 10px var(--green); animation:blink 1s step-end infinite; }
+  @keyframes blink { 50%{opacity:0} }
+  .hero-name { font-family:'Press Start 2P',monospace; font-size:clamp(1.1rem,2.8vw,2rem); color:var(--yellow); line-height:1.6; margin-bottom:1rem; text-shadow:4px 4px 0 #8B6914; position:relative; }
+  .hero-name::before,.hero-name::after { content:attr(data-text); position:absolute; inset:0; font-family:inherit; font-size:inherit; }
+  .hero-name::before { color:var(--cyan); animation:glitch 4s steps(1) infinite; opacity:0.4; }
+  .hero-name::after  { color:var(--magenta); animation:glitch 4s steps(1) infinite 0.2s; opacity:0.35; }
+  @keyframes glitch {
+    0%  {clip-path:inset(0 0 96% 0);transform:skewX(5deg)}
+    10% {clip-path:inset(78% 0 3% 0);transform:skewX(-3deg)}
+    20% {clip-path:inset(48% 0 32% 0);transform:none}
+    30% {clip-path:inset(10% 0 83% 0);transform:skewX(2deg)}
+    40% {clip-path:inset(0 0 0 0);transform:none}
+    100%{clip-path:inset(0 0 0 0)}
+  }
+  .hero-role { font-family:'VT323',monospace; font-size:clamp(1.5rem,3.5vw,2.2rem); color:var(--cyan); text-shadow:2px 2px 0 #006666; margin-bottom:0.4rem; }
+  .hero-company { font-size:1rem; color:#aaa; margin-bottom:2.5rem; letter-spacing:2px; }
+  .hero-company span { color:var(--magenta); text-shadow:0 0 10px var(--magenta); }
+  .pixel-btn {
+    font-family:'Press Start 2P',monospace; font-size:0.55rem; color:var(--dark); background:var(--yellow);
+    border:none; padding:0.9rem 1.5rem; letter-spacing:1px; cursor:none;
+    transition:transform 0.1s,box-shadow 0.1s; box-shadow:4px 4px 0 #8B6914;
+    text-decoration:none; display:inline-block;
+  }
+  .pixel-btn:hover { transform:translate(-2px,-2px); box-shadow:6px 6px 0 #8B6914; }
+  .pixel-btn:active { transform:translate(2px,2px); box-shadow:2px 2px 0 #8B6914; }
+  .photo-frame {
+    width:220px; height:220px; flex-shrink:0; position:relative;
+    border:4px solid var(--cyan); box-shadow:8px 8px 0 var(--dark3),0 0 30px rgba(0,255,255,0.25);
+    background:var(--dark3); display:flex; align-items:center; justify-content:center; overflow:hidden;
+  }
+  .photo-frame::before {
+    content:''; position:absolute; inset:0;
+    background:repeating-linear-gradient(45deg,rgba(0,255,255,0.04),rgba(0,255,255,0.04) 2px,transparent 2px,transparent 12px);
+  }
+  .photo-placeholder { font-family:'Press Start 2P',monospace; font-size:0.42rem; color:var(--cyan); text-align:center; line-height:2.2; padding:1rem; opacity:0.65; position:relative; z-index:1; }
+  .photo-frame img { width:100%; height:100%; object-fit:cover; display:block; }
+  .section-title { font-family:'Press Start 2P',monospace; font-size:clamp(0.75rem,2vw,1rem); color:var(--yellow); text-shadow:3px 3px 0 #8B6914; margin-bottom:0.8rem; display:flex; align-items:center; gap:1rem; }
+  .section-title::before { content:'>'; color:var(--green); text-shadow:0 0 10px var(--green); animation:blink 1.2s step-end infinite; }
+  .section-divider { height:2px; background:linear-gradient(90deg,var(--cyan),transparent); margin-bottom:3rem; }
+  .about-intro { font-size:0.95rem; line-height:2; color:#c0c0d0; border-left:4px solid var(--magenta); padding-left:1.5rem; margin-bottom:2rem; font-style:italic; }
+  .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin-top:2rem; }
+  .pixel-card { background:var(--dark2); border:2px solid var(--dark3); border-top:2px solid var(--cyan); padding:1.5rem; position:relative; transition:border-color 0.3s,box-shadow 0.3s; }
+  .pixel-card:hover { border-color:var(--yellow); box-shadow:4px 4px 0 var(--yellow); }
+  .pixel-card::after { content:''; position:absolute; bottom:-2px; right:-2px; width:12px; height:12px; border-right:2px solid var(--yellow); border-bottom:2px solid var(--yellow); }
+  .pixel-card .card-icon { font-size:1.4rem; margin-bottom:0.7rem; display:block; }
+  .pixel-card h3 { font-family:'Press Start 2P',monospace; font-size:0.5rem; color:var(--cyan); margin-bottom:0.7rem; letter-spacing:1px; }
+  .pixel-card p { font-size:0.88rem; line-height:1.8; color:#b0b0c0; }
+  .timeline { position:relative; padding-left:2rem; margin-top:2rem; }
+  .timeline::before { content:''; position:absolute; left:0; top:0; bottom:0; width:2px; background:repeating-linear-gradient(180deg,var(--cyan) 0px,var(--cyan) 8px,transparent 8px,transparent 16px); }
+  .timeline-item { position:relative; margin-bottom:3rem; padding-left:1.5rem; opacity:0; transform:translateX(-20px); transition:opacity 0.5s,transform 0.5s; }
+  .timeline-item.visible { opacity:1; transform:none; }
+  .timeline-dot { position:absolute; left:-2.35rem; top:0.2rem; width:16px; height:16px; background:var(--yellow); border:2px solid var(--dark); box-shadow:0 0 10px var(--yellow); }
+  .timeline-date { font-family:'Press Start 2P',monospace; font-size:0.48rem; color:var(--green); text-shadow:0 0 6px var(--green); margin-bottom:0.5rem; letter-spacing:1px; }
+  .timeline-title { font-family:'Press Start 2P',monospace; font-size:0.62rem; color:var(--yellow); margin-bottom:0.3rem; text-shadow:2px 2px 0 #8B6914; }
+  .timeline-sub { font-family:'VT323',monospace; font-size:1.25rem; color:var(--cyan); margin-bottom:0.5rem; }
+  .timeline-desc { font-size:0.88rem; color:#9090a0; line-height:1.8; }
+  .timeline-badge { display:inline-block; font-family:'Press Start 2P',monospace; font-size:0.38rem; padding:0.3rem 0.6rem; margin-top:0.5rem; letter-spacing:1px; }
+  .badge-accenture { background:#a100ff18; border:1px solid #a100ff; color:#cc66ff; }
+  .badge-unina { background:#0044ff18; border:1px solid #0088ff; color:#66aaff; }
+  .skills-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(155px,1fr)); gap:1rem; margin-top:2rem; }
+  .skill-chip { background:var(--dark2); border:2px solid var(--dark3); padding:0.8rem 1rem; display:flex; flex-direction:column; gap:0.5rem; transition:all 0.2s; }
+  .skill-chip:hover { border-color:var(--cyan); box-shadow:0 0 12px rgba(0,255,255,0.2); transform:translateY(-3px); }
+  .skill-name { font-family:'Press Start 2P',monospace; font-size:0.42rem; color:#e0e0f0; letter-spacing:1px; }
+  .skill-bar-bg { height:8px; background:var(--dark3); border:1px solid #333; overflow:hidden; }
+  .skill-bar-fill { height:100%; background:linear-gradient(90deg,var(--cyan),var(--green)); box-shadow:0 0 6px var(--cyan); width:0; transition:width 1.4s ease-out; }
+  .skill-pct { font-family:'Press Start 2P',monospace; font-size:0.38rem; color:var(--cyan); text-align:right; }
+
+  /* MINIGAME */
+  #minigame { min-height:auto; padding-bottom:5rem; }
+  .game-wrapper { display:flex; flex-direction:column; align-items:center; gap:1rem; }
+  .game-hud { display:flex; justify-content:space-between; align-items:center; width:100%; max-width:560px; font-family:'Press Start 2P',monospace; font-size:0.5rem; color:var(--yellow); padding:0 0.5rem; }
+  .game-hud .lives { color:var(--cyan); }
+  #game-container { position:relative; border:3px solid var(--cyan); box-shadow:0 0 30px rgba(0,255,255,0.3),inset 0 0 20px rgba(0,0,0,0.5); background:#000; overflow:hidden; }
+  #game-canvas { display:block; image-rendering:pixelated; }
+  .game-controls { display:flex; gap:0.8rem; flex-wrap:wrap; justify-content:center; font-family:'Press Start 2P',monospace; font-size:0.45rem; margin-top:0.5rem; }
+  .game-controls .key { background:var(--dark2); border:2px solid var(--dark3); border-bottom:3px solid #444; padding:0.4rem 0.7rem; color:var(--cyan); letter-spacing:1px; }
+  #game-overlay { position:absolute; inset:0; background:rgba(0,0,0,0.85); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.5rem; z-index:10; }
+  #game-overlay h2 { font-family:'Press Start 2P',monospace; font-size:clamp(0.7rem,2vw,1rem); color:var(--yellow); text-shadow:3px 3px 0 #8B6914; text-align:center; line-height:1.8; }
+  #game-overlay p { font-family:'Press Start 2P',monospace; font-size:0.5rem; color:var(--cyan); text-align:center; line-height:2; }
+  .btn-start { font-family:'Press Start 2P',monospace; font-size:0.6rem; color:var(--dark); background:var(--yellow); border:none; padding:0.8rem 1.5rem; cursor:none; box-shadow:4px 4px 0 #8B6914; letter-spacing:1px; transition:transform 0.1s,box-shadow 0.1s; }
+  .btn-start:hover { transform:translate(-2px,-2px); box-shadow:6px 6px 0 #8B6914; }
+
+  .ghost-float { position:fixed; pointer-events:none; z-index:2; opacity:0.1; animation:ghostFloat linear infinite; }
+  @keyframes ghostFloat { from{transform:translateX(-80px)} to{transform:translateX(calc(100vw + 80px))} }
+  .fade-section { opacity:0; transform:translateY(28px); transition:opacity 0.7s ease,transform 0.7s ease; }
+  .fade-section.visible { opacity:1; transform:none; }
+  footer { position:relative; z-index:1; text-align:center; padding:2.5rem 2rem; border-top:2px solid var(--dark3); font-family:'Press Start 2P',monospace; font-size:0.42rem; color:#444; letter-spacing:2px; }
+  footer span { color:var(--yellow); }
+  @media(max-width:680px){
+    .about-grid{grid-template-columns:1fr}
+    .hero-layout{flex-direction:column-reverse;align-items:center}
+    .photo-frame{width:160px;height:160px}
+    #hero{padding:5rem 1.5rem}
+    .nav-links{gap:1rem}
+    .nav-links a{font-size:0.38rem}
+    #game-canvas{width:100%!important}
+  }
+</style>
+</head>
+<body>
+
+<canvas id="pacman-cursor" width="40" height="40"></canvas>
+<div class="score-display">DOTS &nbsp;<span id="score-display">000</span></div>
+
+<nav>
+  <div class="nav-logo">[ NC.EXE ]</div>
+  <ul class="nav-links">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#about">Chi sono</a></li>
+    <li><a href="#timeline">Timeline</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#minigame">🕹 Gioca</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-layout">
+    <div class="hero-text">
+      <p class="hero-tag">// PLAYER ONE — READY</p>
+      <h1 class="hero-name" data-text="[LAURA DI COSTANZO]">[LAURA DI COSTANZO]</h1>
+      <p class="hero-role">Cybersecurity Associate</p>
+      <p class="hero-company">@ <span>Accenture</span> &nbsp;·&nbsp; Napoli, IT</p>
+      <button class="pixel-btn" id="start-btn">▶ AVVIA PARTITA</button>
+    </div>
+    <div class="photo-frame">
+      <!-- Sostituisci il div sotto con: <img src="./tuafoto.jpg" alt="Foto"> -->
+      <img src="./IMA.jpeg" alt="Foto">
+    </div>
+  </div>
+</section>
+
+<!-- CHI SONO -->
+<section id="about" class="fade-section">
+  <h2 class="section-title">CHI SONO</h2>
+  <div class="section-divider"></div>
+  <p class="about-intro">
+    Appassionato di sicurezza informatica con un occhio sempre puntato sulle minacce digitali.
+    Non mi racconto come un professionista da vetrina — mi racconto come una persona che ha scelto
+    di difendere il digitale perché ci crede davvero.
+  </p>
+  <div class="about-grid">
+    <div class="pixel-card">
+      <span class="card-icon">🛡</span>
+      <h3>La mia missione</h3>
+      <p>Portare la cultura della sicurezza informatica nel mondo reale. Non solo difendere sistemi, ma capire come e perché un attaccante pensa.</p>
+    </div>
+    <div class="pixel-card">
+      <span class="card-icon">🎓</span>
+      <h3>Formazione</h3>
+      <p>Percorso alla Cybersecurity Hackademy della Federico II, poi il grande salto in Accenture. La teoria diventa pratica, ogni giorno.</p>
+    </div>
+    <div class="pixel-card">
+      <span class="card-icon">🔍</span>
+      <h3>Cosa faccio</h3>
+      <p>Lavoro nel mondo della cybersecurity da Accenture, affrontando sfide reali in ambienti enterprise. Ogni giorno è un nuovo livello.</p>
+    </div>
+    <div class="pixel-card">
+      <span class="card-icon">🕹</span>
+      <h3>Off the clock</h3>
+      <p>CTF, caffè, e la strana soddisfazione di trovare una vulnerabilità prima che la trovi qualcun altro. Il gioco non finisce mai.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline" class="fade-section">
+  <h2 class="section-title">TIMELINE</h2>
+  <div class="section-divider"></div>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <p class="timeline-date">NOV 2024 → PRESENTE</p>
+      <p class="timeline-title">Cybersecurity Associate</p>
+      <p class="timeline-sub">Accenture - 24 novembre 2025</p>
+      <p class="timeline-desc">Entrata nel team del Security Operation Center: analisi delle minacce e implementazione di soluzioni di sicurezza per clienti di grande scala.</p>
+      <span class="timeline-badge badge-accenture">ACCENTURE SECURITY</span>
+    </div>
+    <div class="timeline-item" style="transition-delay:0.15s">
+      <div class="timeline-dot"></div>
+      <p class="timeline-date">2024</p>
+      <p class="timeline-title">Cybersecurity Hackademy</p>
+      <p class="timeline-sub">Università Federico II — Napoli</p>
+      <p class="timeline-desc">Programma intensivo di formazione avanzata in cybersecurity alla Federico II. Fondamenta solide in penetration testing, sicurezza delle reti, analisi forense e gestione degli incidenti.</p>
+      <span class="timeline-badge badge-unina">FEDERICO II</span>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="fade-section">
+  <h2 class="section-title">SKILLS</h2>
+  <div class="section-divider"></div>
+  <div class="skills-grid" id="skills-grid"></div>
+</section>
+
+<!-- MINIGAME -->
+<section id="minigame" class="fade-section">
+  <h2 class="section-title">MINIGAME</h2>
+  <div class="section-divider"></div>
+  <div class="game-wrapper">
+    <div class="game-hud">
+      <span>SCORE: <span id="g-score">0</span></span>
+      <span>HIGH: <span id="g-high">0</span></span>
+      <span class="lives">LIVES: <span id="g-lives">♥♥♥</span></span>
+    </div>
+    <div id="game-container">
+      <canvas id="game-canvas"></canvas>
+      <div id="game-overlay">
+        <h2>PAC-MAN<br>CYBER EDITION</h2>
+        <p>Mangia tutti i pallini<br>Evita i fantasmi<br>← ↑ → ↓ oppure WASD</p>
+        <button class="btn-start" id="overlay-btn">▶ INSERT COIN</button>
+      </div>
+    </div>
+    <div class="game-controls">
+      <span class="key">W / ↑</span>
+      <span class="key">A / ←</span>
+      <span class="key">S / ↓</span>
+      <span class="key">D / →</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 <span>[LAURA DI COSTANZO]</span> · BUILT WITH ❤ AND CAFFEINE · ALL SYSTEMS OPERATIONAL</p>
+</footer>
+
+<script>
+// ──────────────────────────────────────────────
+//  PAC-MAN CURSOR
+// ──────────────────────────────────────────────
+const cur = document.getElementById('pacman-cursor');
+const cctx = cur.getContext('2d');
+let mx=-100,my=-100,px=-100,py=-100,cAngle=0,cMouth=0,cDir=1,dotsN=0,dotTick=0;
+function drawCur(m){
+  cctx.clearRect(0,0,40,40);
+  const mo=m*0.35;
+  cctx.beginPath(); cctx.moveTo(20,20);
+  cctx.arc(20,20,15,mo,Math.PI*2-mo); cctx.closePath();
+  cctx.fillStyle='#FFD700'; cctx.fill();
+  const ex=20+5.5*Math.cos(-Math.PI/4), ey=20+5.5*Math.sin(-Math.PI/4);
+  cctx.beginPath(); cctx.arc(ex,ey,2.5,0,Math.PI*2);
+  cctx.fillStyle='#0a0a0f'; cctx.fill();
+}
+document.addEventListener('mousemove',e=>{
+  const dx=e.clientX-px, dy=e.clientY-py;
+  if(Math.abs(dx)>2||Math.abs(dy)>2){cAngle=Math.atan2(dy,dx);px=e.clientX;py=e.clientY;}
+  cur.style.left=(e.clientX-20)+'px'; cur.style.top=(e.clientY-20)+'px';
+  cur.style.transform=`rotate(${cAngle}rad)`;
+  dotTick++;
+  if(dotTick%5===0){
+    dotsN++; document.getElementById('score-display').textContent=String(dotsN).padStart(3,'0');
+    const d=document.createElement('div'); d.className='dot-trail';
+    d.style.left=(e.clientX-4)+'px'; d.style.top=(e.clientY-4)+'px';
+    document.body.appendChild(d); setTimeout(()=>d.remove(),700);
+  }
+});
+(function ac(){cMouth+=cDir*0.07;if(cMouth>=1)cDir=-1;if(cMouth<=0)cDir=1;drawCur(cMouth);requestAnimationFrame(ac);})();
+
+// FLOATING GHOSTS
+['#FF0000','#FFB8FF','#00FFFF','#FFB852'].forEach((c,i)=>{
+  const g=document.createElement('div'); g.className='ghost-float';
+  g.style.top=(15+i*18)+'vh';
+  g.style.animationDuration=(20+i*8)+'s';
+  g.style.animationDelay=(-i*6)+'s';
+  g.innerHTML=`<svg width="36" height="44" viewBox="0 0 40 48"><path d="M2 46L2 16Q2 2 20 2Q38 2 38 16L38 46L32 38L26 46L20 38L14 46L8 38Z" fill="${c}"/><circle cx="14" cy="20" r="6" fill="white"/><circle cx="26" cy="20" r="6" fill="white"/><circle cx="15" cy="21" r="3" fill="#222"/><circle cx="27" cy="21" r="3" fill="#222"/></svg>`;
+  document.body.appendChild(g);
+});
+
+// AVVIA PARTITA → scroll to #about
+document.getElementById('start-btn').addEventListener('click',()=>{
+  document.getElementById('about').scrollIntoView({behavior:'smooth'});
+});
+
+// SKILLS
+const skillsData=[
+  {name:'Penetration Testing',lvl:75},{name:'Network Security',lvl:80},
+  {name:'Threat Analysis',lvl:70},{name:'SIEM / SOC',lvl:65},
+  {name:'Vuln Management',lvl:72},{name:'Incident Response',lvl:68},
+  {name:'Python / Scripting',lvl:60},{name:'OSINT',lvl:78},
+  {name:'Cloud Security',lvl:55},{name:'Risk Assessment',lvl:70},
+  {name:'CTF',lvl:82},{name:'Forensics',lvl:63},
+];
+const sg=document.getElementById('skills-grid');
+skillsData.forEach(s=>{
+  const c=document.createElement('div'); c.className='skill-chip';
+  c.innerHTML=`<span class="skill-name">${s.name}</span>
+    <div class="skill-bar-bg"><div class="skill-bar-fill" data-lvl="${s.lvl}"></div></div>
+    <span class="skill-pct">${s.lvl}%</span>`;
+  sg.appendChild(c);
+});
+
+// SCROLL ANIMATIONS
+const fadeObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.08});
+document.querySelectorAll('.fade-section').forEach(el=>fadeObs.observe(el));
+const tlObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.querySelectorAll('.timeline-item').forEach((it,i)=>setTimeout(()=>it.classList.add('visible'),i*180));}),{threshold:0.1});
+document.querySelectorAll('.timeline').forEach(el=>tlObs.observe(el));
+const barObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.querySelectorAll('.skill-bar-fill').forEach(b=>b.style.width=b.dataset.lvl+'%');}),{threshold:0.2});
+document.querySelectorAll('#skills').forEach(el=>barObs.observe(el));
+
+// ──────────────────────────────────────────────
+//  PAC-MAN MINIGAME
+// ──────────────────────────────────────────────
+(function(){
+  const gc=document.getElementById('game-canvas');
+  const g=gc.getContext('2d');
+  const CELL=28, COLS=20, ROWS=20;
+  gc.width=COLS*CELL; gc.height=ROWS*CELL;
+  document.getElementById('game-container').style.width=(COLS*CELL)+'px';
+
+  const T=[
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+    [1,3,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,3,1],
+    [1,0,1,1,0,1,1,1,0,1,1,0,1,1,1,0,1,1,0,1],
+    [1,0,1,1,0,1,1,1,0,1,1,0,1,1,1,0,1,1,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,1,1,0,1,0,1,1,1,1,1,1,0,1,0,1,1,0,1],
+    [1,0,0,0,0,1,0,0,0,1,1,0,0,0,1,0,0,0,0,1],
+    [1,1,1,1,0,1,1,1,2,1,1,2,1,1,1,0,1,1,1,1],
+    [1,1,1,1,0,1,2,2,2,2,2,2,2,2,1,0,1,1,1,1],
+    [1,1,1,1,0,1,2,1,1,2,2,1,1,2,1,0,1,1,1,1],
+    [2,2,2,2,0,2,2,1,2,2,2,2,1,2,2,0,2,2,2,2],
+    [1,1,1,1,0,1,2,1,1,1,1,1,1,2,1,0,1,1,1,1],
+    [1,1,1,1,0,1,2,2,2,2,2,2,2,2,1,0,1,1,1,1],
+    [1,1,1,1,0,1,2,1,1,1,1,1,1,2,1,0,1,1,1,1],
+    [1,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1],
+    [1,0,1,1,0,1,1,1,0,1,1,0,1,1,1,0,1,1,0,1],
+    [1,3,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,3,1],
+    [1,1,0,1,0,1,0,1,1,1,1,1,1,0,1,0,1,0,1,1],
+    [1,0,0,0,0,1,0,0,0,1,1,0,0,0,1,0,0,0,0,1],
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+  ];
+
+  let map,pac,ghosts,gs,highScore=0,lives,powered,powerTimer,gameState='idle',animId,lastTime=0,frameAcc=0;
+  const FRAME_MS=110;
+  const GC=['#FF0000','#FFB8FF','#00FFFF','#FFB852'];
+  const DIRS={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0],w:[0,-1],s:[0,1],a:[-1,0],d:[1,0],W:[0,-1],S:[0,1],A:[-1,0],D:[1,0]};
+
+  function can(gx,gy){return gx>=0&&gx<COLS&&gy>=0&&gy<ROWS&&map[gy][gx]!==1;}
+
+  function init(){
+    map=T.map(r=>[...r]);
+    gs=0; lives=3; powered=false; powerTimer=0;
+    document.getElementById('g-score').textContent=0;
+    document.getElementById('g-lives').textContent='♥'.repeat(3);
+    pac={x:10,y:14,dx:0,dy:0,ndx:0,ndy:0,mouth:0,mdir:1};
+    ghosts=GC.map((c,i)=>({x:9+i%2,y:9+Math.floor(i/2),dx:1,dy:0,color:c,scared:false,timer:i*25+10}));
+  }
+
+  function movePac(){
+    if(can(pac.x+pac.ndx,pac.y+pac.ndy)){pac.dx=pac.ndx;pac.dy=pac.ndy;}
+    const nx=pac.x+pac.dx,ny=pac.y+pac.dy;
+    if(can(nx,ny)){pac.x=nx;pac.y=ny;}
+    if(pac.x<0)pac.x=COLS-1;if(pac.x>=COLS)pac.x=0;
+    const cell=map[pac.y][pac.x];
+    if(cell===0){map[pac.y][pac.x]=2;gs+=10;document.getElementById('g-score').textContent=gs;}
+    if(cell===3){map[pac.y][pac.x]=2;gs+=50;powered=true;powerTimer=180;document.getElementById('g-score').textContent=gs;ghosts.forEach(h=>h.scared=true);}
+    if(gs>highScore){highScore=gs;document.getElementById('g-high').textContent=highScore;}
+    if(!map.some(r=>r.includes(0)||r.includes(3)))endGame('YOU WIN! ★');
+  }
+
+  function moveGhost(gh){
+    gh.timer--;if(gh.timer>0)return;
+    gh.timer=powered?10:6;
+    const dirs=[[1,0],[-1,0],[0,1],[0,-1]];
+    let best=null,bestD=powered?-Infinity:Infinity;
+    dirs.forEach(([dx,dy])=>{
+      if(dx===-gh.dx&&dy===-gh.dy&&dirs.filter(d=>can(gh.x+d[0],gh.y+d[1])).length>1)return;
+      const nx=gh.x+dx,ny=gh.y+dy;
+      if(!can(nx,ny))return;
+      const d=(nx-pac.x)**2+(ny-pac.y)**2;
+      if(powered?d>bestD:d<bestD){bestD=d;best=[dx,dy];}
+    });
+    if(!best){const f=dirs.find(([dx,dy])=>can(gh.x+dx,gh.y+dy));if(f)best=f;else return;}
+    gh.dx=best[0];gh.dy=best[1];
+    gh.x+=gh.dx;gh.y+=gh.dy;
+    if(gh.x<0)gh.x=COLS-1;if(gh.x>=COLS)gh.x=0;
+  }
+
+  function checkCol(){
+    ghosts.forEach(gh=>{
+      if(Math.abs(gh.x-pac.x)<=1&&Math.abs(gh.y-pac.y)<=1){
+        if(gh.scared){gh.scared=false;gh.x=10;gh.y=9;gs+=200;document.getElementById('g-score').textContent=gs;}
+        else loseLife();
+      }
+    });
+  }
+
+  function loseLife(){
+    lives--;document.getElementById('g-lives').textContent='♥'.repeat(Math.max(0,lives));
+    if(lives<=0){endGame('GAME OVER');return;}
+    pac.x=10;pac.y=14;pac.dx=0;pac.dy=0;pac.ndx=0;pac.ndy=0;
+    ghosts.forEach((gh,i)=>{gh.x=9+i%2;gh.y=9+Math.floor(i/2);gh.dx=1;gh.dy=0;gh.scared=false;gh.timer=i*25+10;});
+  }
+
+  function endGame(msg){
+    gameState='over';cancelAnimationFrame(animId);
+    const ov=document.getElementById('game-overlay');
+    ov.querySelector('h2').textContent=msg;
+    ov.querySelector('p').textContent='SCORE: '+gs+(gs>=highScore&&gs>0?' ★ NEW HIGH!':'');
+    document.getElementById('overlay-btn').textContent='▶ PLAY AGAIN';
+    ov.style.display='flex';
+  }
+
+  function drawMap(){
+    for(let r=0;r<ROWS;r++){
+      for(let c=0;c<COLS;c++){
+        const v=map[r][c],cx=c*CELL,cy=r*CELL;
+        if(v===1){
+          g.fillStyle='#0d1a3a'; g.fillRect(cx,cy,CELL,CELL);
+          g.strokeStyle='#00FFFF'; g.lineWidth=1.5; g.strokeRect(cx+1,cy+1,CELL-2,CELL-2);
+        } else {
+          g.fillStyle='#000'; g.fillRect(cx,cy,CELL,CELL);
+          if(v===0){g.beginPath();g.arc(cx+CELL/2,cy+CELL/2,3,0,Math.PI*2);g.fillStyle='#FFD700';g.fill();}
+          if(v===3){const p=0.7+0.3*Math.sin(Date.now()/200);g.beginPath();g.arc(cx+CELL/2,cy+CELL/2,6*p,0,Math.PI*2);g.fillStyle='#FFD700';g.fill();}
+        }
+      }
+    }
+  }
+
+  function drawPac(){
+    const m=pac.mouth*0.35;
+    const angle=Math.atan2(pac.dy,pac.dx)||0;
+    const px=pac.x*CELL+CELL/2, py=pac.y*CELL+CELL/2;
+    g.save();g.translate(px,py);g.rotate(angle);
+    g.beginPath();g.moveTo(0,0);g.arc(0,0,CELL/2-2,m,Math.PI*2-m);g.closePath();
+    g.fillStyle='#FFD700';g.fill();
+    g.restore();
+  }
+
+  function drawGhosts(){
+    ghosts.forEach(gh=>{
+      const c=gh.scared?(powerTimer<60&&Math.floor(Date.now()/200)%2?'#fff':'#0000FF'):gh.color;
+      const x=gh.x*CELL+CELL/2, y=gh.y*CELL+CELL/2, r=CELL/2-2;
+      g.fillStyle=c;
+      g.beginPath();g.arc(x,y-2,r,Math.PI,0);g.lineTo(x+r,y+r);
+      const w=r/2;
+      for(let i=0;i<3;i++){const bx=x+r-w*i*2;g.quadraticCurveTo(bx-w/2,y+r-5,bx-w,y+r);}
+      g.lineTo(x-r,y+r);g.closePath();g.fill();
+      if(!gh.scared){
+        g.fillStyle='white';
+        g.beginPath();g.arc(x-4,y-4,4,0,Math.PI*2);g.fill();
+        g.beginPath();g.arc(x+4,y-4,4,0,Math.PI*2);g.fill();
+        g.fillStyle='#00008B';
+        g.beginPath();g.arc(x-3+gh.dx,y-4+gh.dy,2,0,Math.PI*2);g.fill();
+        g.beginPath();g.arc(x+5+gh.dx,y-4+gh.dy,2,0,Math.PI*2);g.fill();
+      }
+    });
+  }
+
+  function loop(ts){
+    animId=requestAnimationFrame(loop);
+    const dt=ts-lastTime;lastTime=ts;frameAcc+=dt;
+    pac.mouth+=pac.mdir*0.1;if(pac.mouth>=1)pac.mdir=-1;if(pac.mouth<=0)pac.mdir=1;
+    if(frameAcc>=FRAME_MS){
+      frameAcc=0;
+      movePac();ghosts.forEach(moveGhost);
+      if(powered){powerTimer--;if(powerTimer<=0){powered=false;ghosts.forEach(h=>h.scared=false);}}
+      checkCol();
+    }
+    drawMap();drawPac();drawGhosts();
+  }
+
+  document.addEventListener('keydown',e=>{
+    if(DIRS[e.key]){e.preventDefault();pac.ndx=DIRS[e.key][0];pac.ndy=DIRS[e.key][1];}
+  });
+  let tx0=0,ty0=0;
+  gc.addEventListener('touchstart',e=>{tx0=e.touches[0].clientX;ty0=e.touches[0].clientY;},{passive:true});
+  gc.addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-tx0,dy=e.changedTouches[0].clientY-ty0;
+    if(Math.abs(dx)>Math.abs(dy)){pac.ndx=dx>0?1:-1;pac.ndy=0;}
+    else{pac.ndy=dy>0?1:-1;pac.ndx=0;}
+  });
+
+  document.getElementById('overlay-btn').addEventListener('click',()=>{
+    document.getElementById('game-overlay').style.display='none';
+    init();gameState='playing';lastTime=performance.now();loop(lastTime);
+  });
+})();
+</script>
+</body>
+</html>
